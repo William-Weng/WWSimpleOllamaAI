@@ -1,0 +1,73 @@
+//
+//  Constant.swift
+//  WWSimpleOllamaAI
+//
+//  Created by William.Weng on 2025/2/11.
+//
+
+import UIKit
+
+// MARK: - enum
+public extension WWSimpleOllamaAI {
+    
+    /// [API功能](https://api-docs.deepseek.com/)
+    enum API {
+        
+        case generate
+        case chat
+        
+        /// 取得url
+        /// - Returns: String
+        public func url() -> String {
+            
+            let path: String
+            
+            switch self {
+            case .generate: path = "api/generate"
+            case .chat: path = "api/chat"
+            }
+            
+            return "\(WWSimpleOllamaAI.baseURL)/\(path)"
+        }
+    }
+    
+    /// 角色類型
+    enum Role: Codable {
+        
+        case user
+        case assistant
+        case custom(_ name: String)
+        
+        /// 角色名稱
+        /// - Returns: String
+        func name() -> String {
+            switch self {
+            case .user: return "user"
+            case .assistant: return "assistant"
+            case .custom(let name): return name
+            }
+        }
+    }
+    
+    /// 結果回傳的格式
+    enum ResponseType {
+        case string(_ string: String? = nil)
+        case data(_ data: Data? = nil)
+        case ndjson(_ json: [Any]? = nil)
+    }
+    
+    /// Ollama錯誤
+    enum OllamaError: Error {
+        
+        case jsonString     // JSON格式編碼錯誤
+        
+        /// 錯誤訊息
+        /// - Returns: String
+        public func message() -> String {
+            
+            switch self {
+            case .jsonString: return "JSON format encoding error."
+            }
+        }
+    }
+}
