@@ -41,20 +41,24 @@ public extension WWSimpleOllamaAI {
     /// - Parameters:
     ///   - prompt: 提問
     ///   - type: 回應樣式 => String / Data / JSON
+    ///   - format: 回應樣式格式化
     ///   - useStream: 是否使用串流回應
     ///   - encoding: 文字編碼
     /// - Returns: Result<String?, Error>
-    func generate(prompt: String, type: ResponseType = .string(), useStream: Bool = false, using encoding: String.Encoding = .utf8) async -> Result<ResponseType, Error> {
+    func generate(prompt: String, type: ResponseType = .string(), format: ResponseFormat? = nil, useStream: Bool = false, using encoding: String.Encoding = .utf8) async -> Result<ResponseType, Error> {
         
         let api = API.generate
-        let json = """
+        let format = format?.value() ?? "\"\""
+        
+        var json = """
         {
           "model": "\(Self.model)",
           "prompt": "\(prompt)",
-          "stream": \(useStream)
+          "stream": \(useStream),
+          "format": \(format)
         }
         """
-        
+                
         let result = await WWNetworking.shared.request(httpMethod: .POST, urlString: api.url(), headers: nil, httpBodyType: .string(json))
         
         switch result {

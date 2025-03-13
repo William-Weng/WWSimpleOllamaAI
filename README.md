@@ -11,14 +11,14 @@
 ### [Installation with Swift Package Manager](https://medium.com/彼得潘的-swift-ios-app-開發問題解答集/使用-spm-安裝第三方套件-xcode-11-新功能-2c4ffcf85b4b)
 ```
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWSimpleOllamaAI.git", .upToNextMajor(from: "0.5.1"))
+    .package(url: "https://github.com/William-Weng/WWSimpleOllamaAI.git", .upToNextMajor(from: "0.5.2"))
 ]
 ```
 
 ## [Function - 可用函式](https://william-weng.github.io/2025/01/docker容器大家一起來當鯨魚搬運工吧/)
 |函式|功能|
 |-|-|
-|generate(prompt:type:useStream:using:)|生成文本回應|
+|generate(prompt:type:format:useStream:using:)|生成文本回應|
 |chat(message:type:useStream:using:)|聊天對話|
 
 ## [Example](https://ezgif.com/video-to-webp)
@@ -57,7 +57,7 @@ final class ViewController: UIViewController {
         let json = """
         {
           "model": "\(WWSimpleOllamaAI.model)",
-          "prompt": "請寫出一首5言詞",
+          "prompt": "請寫出一首五言詞",
           "stream": true
         }
         """

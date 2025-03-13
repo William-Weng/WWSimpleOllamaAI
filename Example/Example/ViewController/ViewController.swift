@@ -40,7 +40,7 @@ final class ViewController: UIViewController {
         let json = """
         {
           "model": "\(WWSimpleOllamaAI.model)",
-          "prompt": "請寫出一首5言詞",
+          "prompt": "請寫出一首五言詞",
           "stream": true
         }
         """
@@ -178,7 +178,7 @@ private extension ViewController {
         }
         
         response += _response
-                
+        
         DispatchQueue.main.async { [unowned self] in
             resultTextView.text = response
             resultTextView._autoScrollToBottom()

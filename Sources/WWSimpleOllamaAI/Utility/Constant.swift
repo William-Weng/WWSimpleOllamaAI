@@ -56,6 +56,22 @@ public extension WWSimpleOllamaAI {
         case ndjson(_ json: [Any]? = nil)
     }
     
+    /// 要求AI要回傳的格式敘述
+    enum ResponseFormat {
+        
+        case string(_ string: String)
+        case json(_ json: String)
+        
+        /// 數值
+        /// - Returns: String
+        func value() -> String {
+            switch self {
+            case .string(let string): return "\"\(string)\""
+            case .json(let json): return json
+            }
+        }
+    }
+    
     /// Ollama錯誤
     enum OllamaError: Error {
         
