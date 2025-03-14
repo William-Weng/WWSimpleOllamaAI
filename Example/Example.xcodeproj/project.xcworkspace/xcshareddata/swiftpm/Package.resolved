@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/William-Weng/WWSimpleOllamaAI",
       "state" : {
-        "revision" : "d8463b54453d86caed328f1165c8fa2b0518a20d",
-        "version" : "0.5.1"
+        "revision" : "fd2e20a8604d8d4f9bd9ff0b3e38f3260f93fdd4",
+        "version" : "0.5.2"
       }
     }
   ],

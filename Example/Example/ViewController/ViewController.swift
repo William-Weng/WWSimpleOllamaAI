@@ -21,13 +21,16 @@ final class ViewController: UIViewController {
     private var isDismiss = false
     private var response: String = ""
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        Task { await initLoadModelIntoMemory() }
+    }
+    
     @IBAction func generateDemo(_ sender: UIButton) {
-        configure()
         Task { await generate(prompt: "你好,請問今天天氣如何?") }
     }
     
     @IBAction func chatDemo(_ sender: UIButton) {
-         configure()
          Task { await chat(content: "您的模型是幾版的？") }
     }
     
@@ -40,7 +43,7 @@ final class ViewController: UIViewController {
         let json = """
         {
           "model": "\(WWSimpleOllamaAI.model)",
-          "prompt": "請寫出一首五言詞",
+          "prompt": "請寫出一首五言詩",
           "stream": true
         }
         """
@@ -68,12 +71,22 @@ extension ViewController: WWEventSource.Delegate {
 // MARK: - 小工具
 private extension ViewController {
     
-    /// 設定模型
-    func configure() {
-        guard let model = modelTextField.text else { return }
-        WWSimpleOllamaAI.configure(baseURL: baseURL, model: model)
+    /// 先將模型載入記憶體中
+    func initLoadModelIntoMemory() async {
+        
+        displayHUD()
+        configure()
+        
+        let result = await WWSimpleOllamaAI.shared.loadIntoMemory()
+        
+        switch result {
+        case .failure(let error): displayText(error)
+        case .success(let responseType): diplayResponse(type: responseType)
+        }
+        
+        WWHUD.shared.dismiss()
     }
-    
+        
     /// 生成文本回應
     /// - Parameters:
     ///   - prompt: 提問文字
@@ -111,6 +124,12 @@ private extension ViewController {
 
 // MARK: - 小工具
 private extension ViewController {
+    
+    /// 設定模型
+    func configure() {
+        guard let model = modelTextField.text else { return }
+        WWSimpleOllamaAI.configure(baseURL: baseURL, model: model)
+    }
     
     /// 顯示AI回應
     /// - Parameter type: WWSimpleOllamaAI.ResponseType

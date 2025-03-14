@@ -72,6 +72,22 @@ public extension WWSimpleOllamaAI {
         }
     }
     
+    /// 要求AI要求的選項敘述
+    enum ResponseOptions {
+        
+        case string(_ string: String)
+        case json(_ json: String)
+        
+        /// 數值
+        /// - Returns: String
+        func value() -> String {
+            switch self {
+            case .string(let string): return "\"\(string)\""
+            case .json(let json): return json
+            }
+        }
+    }
+    
     /// Ollama錯誤
     enum OllamaError: Error {
         
@@ -85,5 +101,13 @@ public extension WWSimpleOllamaAI {
             case .jsonString: return "JSON format encoding error."
             }
         }
+    }
+    
+    /// [網頁檔案類型的MimeType](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types)
+    enum MimeType {
+        
+        case jpeg(compressionQuality: CGFloat)
+        case png
+        case heic
     }
 }

@@ -11,23 +11,32 @@
 ### [Installation with Swift Package Manager](https://medium.com/彼得潘的-swift-ios-app-開發問題解答集/使用-spm-安裝第三方套件-xcode-11-新功能-2c4ffcf85b4b)
 ```
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWSimpleOllamaAI.git", .upToNextMajor(from: "0.5.2"))
+    .package(url: "https://github.com/William-Weng/WWSimpleOllamaAI.git", .upToNextMajor(from: "0.5.3"))
 ]
 ```
 
 ## [Function - 可用函式](https://william-weng.github.io/2025/01/docker容器大家一起來當鯨魚搬運工吧/)
 |函式|功能|
 |-|-|
-|generate(prompt:type:format:useStream:using:)|生成文本回應|
-|chat(message:type:useStream:using:)|聊天對話|
+|loadIntoMemory(_:type:using:)|載入模型到記憶體的設定 - 開 / 關|
+|generate(prompt:type:format:images:options:useStream:using:)|一次性回應 - 每次請求都是獨立的|
+|chat(message:type:useStream:using:)|對話模式 - 會記住之前的對話內容|
 
 ## [Example](https://ezgif.com/video-to-webp)
 ```swift
+//
+//  ViewController.swift
+//  Example
+//
+//  Created by William.Weng on 2025/3/13.
+//
+
 import UIKit
 import WWHUD
 import WWEventSource
 import WWSimpleOllamaAI
 
+// MARK: - ViewController
 final class ViewController: UIViewController {
     
     @IBOutlet weak var modelTextField: UITextField!
@@ -38,13 +47,16 @@ final class ViewController: UIViewController {
     private var isDismiss = false
     private var response: String = ""
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        Task { await initLoadModelIntoMemory() }
+    }
+    
     @IBAction func generateDemo(_ sender: UIButton) {
-        configure()
         Task { await generate(prompt: "你好,請問今天天氣如何?") }
     }
     
     @IBAction func chatDemo(_ sender: UIButton) {
-         configure()
          Task { await chat(content: "您的模型是幾版的？") }
     }
     
@@ -57,7 +69,7 @@ final class ViewController: UIViewController {
         let json = """
         {
           "model": "\(WWSimpleOllamaAI.model)",
-          "prompt": "請寫出一首五言詞",
+          "prompt": "請寫出一首五言詩",
           "stream": true
         }
         """
@@ -66,7 +78,6 @@ final class ViewController: UIViewController {
     }
 }
 
-// MARK: - WWEventSourceDelegate
 extension ViewController: WWEventSource.Delegate {
     
     func serverSentEventsConnectionStatus(_ eventSource: WWEventSource, result: Result<WWEventSource.ConnectionStatus, any Error>) {
@@ -82,12 +93,21 @@ extension ViewController: WWEventSource.Delegate {
     }
 }
 
-// MARK: - 小工具
 private extension ViewController {
     
-    func configure() {
-        guard let model = modelTextField.text else { return }
-        WWSimpleOllamaAI.configure(baseURL: baseURL, model: model)
+    func initLoadModelIntoMemory() async {
+        
+        displayHUD()
+        configure()
+        
+        let result = await WWSimpleOllamaAI.shared.loadIntoMemory()
+        
+        switch result {
+        case .failure(let error): displayText(error)
+        case .success(let responseType): diplayResponse(type: responseType)
+        }
+        
+        WWHUD.shared.dismiss()
     }
     
     func generate(prompt: String) async {
@@ -103,7 +123,7 @@ private extension ViewController {
         
         WWHUD.shared.dismiss()
     }
-
+    
     func chat(content: String) async {
         
         displayHUD()
@@ -121,6 +141,11 @@ private extension ViewController {
 }
 
 private extension ViewController {
+    
+    func configure() {
+        guard let model = modelTextField.text else { return }
+        WWSimpleOllamaAI.configure(baseURL: baseURL, model: model)
+    }
     
     func diplayResponse(type: WWSimpleOllamaAI.ResponseType) {
         
@@ -174,7 +199,7 @@ private extension ViewController {
         }
         
         response += _response
-                
+        
         DispatchQueue.main.async { [unowned self] in
             resultTextView.text = response
             resultTextView._autoScrollToBottom()

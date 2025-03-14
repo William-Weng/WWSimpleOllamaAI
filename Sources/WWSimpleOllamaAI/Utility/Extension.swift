@@ -7,6 +7,17 @@
 
 import UIKit
  
+// MARK: - Collection (function)
+extension Collection where Self.Element: UIImage {
+    
+    /// [UIImage] => [Base64]
+    /// - Parameter mimeType: Constant.MimeType
+    /// - Returns: [String?]
+    func _base64String(mimeType: WWSimpleOllamaAI.MimeType) -> [String] {
+        return compactMap({ $0._base64String(mimeType: mimeType) })
+    }
+}
+
 // MARK: - Encodable (function)
 extension Encodable {
     
@@ -31,6 +42,14 @@ extension Encodable {
         guard let jsonData = self._jsonData() else { return nil }
         return jsonData._jsonObject()
     }
+}
+
+// MARK: - Bool (function)
+extension Bool {
+    
+    /// 將布林值轉成Int (true => 1 / false => 0)
+    /// - Returns: Int
+    func _int() -> Int { return Int(truncating: NSNumber(value: self)) }
 }
 
 // MARK: - String (function)
@@ -80,5 +99,29 @@ extension Data {
         })
         
         return jsonArray
+    }
+}
+
+// MARK: - UIImage (function)
+extension UIImage {
+    
+    /// UIImage => Data (jpeg / png)
+    /// - Parameter mimeType: jpeg / png
+    /// - Returns: Data?
+    func _data(mimeType: WWSimpleOllamaAI.MimeType = .png) -> Data? {
+        
+        switch mimeType {
+        case .jpeg(let compressionQuality): return jpegData(compressionQuality: compressionQuality)
+        case .png: return pngData()
+        default: return nil
+        }
+    }
+    
+    /// Image => Data => Base64字串
+    /// - Parameter mimeType: jpeg / png
+    /// - Returns: String?
+    func _base64String(mimeType: WWSimpleOllamaAI.MimeType = .png) -> String? {
+        let data = _data(mimeType: mimeType)
+        return data?.base64EncodedString()
     }
 }

@@ -58,7 +58,7 @@
                                         <color key="backgroundColor" systemColor="systemOrangeColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="請寫出一首五言詞"/>
+                                        <state key="normal" title="請寫出一首五言詩"/>
                                         <connections>
                                             <action selector="chatDemo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dsl-DY-r94"/>
                                             <action selector="generateLiveDemo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wfd-Rr-Twe"/>

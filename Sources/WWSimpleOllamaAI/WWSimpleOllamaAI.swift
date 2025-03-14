@@ -37,25 +37,57 @@ public extension WWSimpleOllamaAI {
 // MARK: - 公開函式
 public extension WWSimpleOllamaAI {
     
-    /// [生成文本回應](https://github.com/ollama/ollama)
+    /// 載入模型到記憶體的設定 - 開/關
+    /// - Parameters:
+    ///   - isLoad: 載入 / 刪除
+    ///   - type: 回應樣式 => String / Data / JSON
+    ///   - encoding: 文字編碼
+    /// - Returns: Result<ResponseType, Error>
+    func loadIntoMemory(_ isLoad: Bool = true, type: ResponseType = .string() , using encoding: String.Encoding = .utf8) async -> Result<ResponseType, Error> {
+        
+        let api = API.generate
+        
+        var json = """
+        {
+          "model": "\(Self.model)",
+          "keep_alive": \(isLoad._int())
+        }
+        """
+        
+        let result = await WWNetworking.shared.request(httpMethod: .POST, urlString: api.url(), headers: nil, httpBodyType: .string(json))
+        
+        switch result {
+        case .failure(let error): return .failure(error)
+        case .success(let info): return .success(parseResponseInformation(info, api: api, forType: type, field: "done_reason", using: encoding))
+        }
+    }
+    
+    /// [一次性回應 - 每次請求都是獨立的](https://github.com/ollama/ollama)
     /// - Parameters:
     ///   - prompt: 提問
     ///   - type: 回應樣式 => String / Data / JSON
     ///   - format: 回應樣式格式化
+    ///   - images: 要上傳的圖片
+    ///   - options: 其它選項
     ///   - useStream: 是否使用串流回應
     ///   - encoding: 文字編碼
     /// - Returns: Result<String?, Error>
-    func generate(prompt: String, type: ResponseType = .string(), format: ResponseFormat? = nil, useStream: Bool = false, using encoding: String.Encoding = .utf8) async -> Result<ResponseType, Error> {
+    func generate(prompt: String, type: ResponseType = .string(), format: ResponseFormat? = nil, images: [UIImage]? = nil, options: ResponseOptions? = nil, useStream: Bool = false, using encoding: String.Encoding = .utf8) async -> Result<ResponseType, Error> {
         
+        let nullValue = "null"
         let api = API.generate
-        let format = format?.value() ?? "\"\""
-        
+        let format = format?.value() ?? nullValue
+        let options = options?.value() ?? nullValue
+        let images = images?._base64String(mimeType: .jpeg(compressionQuality: 0.8))._jsonString() ?? nullValue
+
         var json = """
         {
           "model": "\(Self.model)",
           "prompt": "\(prompt)",
           "stream": \(useStream),
-          "format": \(format)
+          "format": \(format),
+          "images": \(images),
+          "options": \(options)
         }
         """
                 
@@ -63,11 +95,11 @@ public extension WWSimpleOllamaAI {
         
         switch result {
         case .failure(let error): return .failure(error)
-        case .success(let info): return .success(parseResponseInformation(info, api: api, forType: type, using: encoding))
+        case .success(let info): return .success(parseResponseInformation(info, api: api, forType: type, field: "response", using: encoding))
         }
     }
     
-    /// [聊天對話](https://github.com/ollama/ollama/blob/main/docs/api.md)
+    /// [對話模式 - 會記住之前的對話內容](https://github.com/ollama/ollama/blob/main/docs/api.md)
     /// - Parameters:
     ///   - message: [提問](https://dribbble.com/shots/22339104-Crab-Loading-Gif)
     ///   - type: 回應樣式 => String / Data / JSON
@@ -90,7 +122,7 @@ public extension WWSimpleOllamaAI {
         
         switch result {
         case .failure(let error): return .failure(error)
-        case .success(let info): return .success(parseResponseInformation(info, api: api, forType: type, using: encoding))
+        case .success(let info): return .success(parseResponseInformation(info, api: api, forType: type, field: "content", using: encoding))
         }
     }
 }
@@ -100,16 +132,18 @@ private extension WWSimpleOllamaAI {
     
     /// 解析回應格式 => String / Data / JSON
     /// - Parameters:
-    ///   - info: WWNetworking.ResponseInformation
-    ///   - type: ResponseType
-    ///   - encoding: String.Encoding
+    ///   - info: 回應資訊
+    ///   - api: API類型
+    ///   - type: 回應類型
+    ///   - field: 要取得的欄位名稱
+    ///   - encoding: 文字編碼
     /// - Returns: ResponseType
-    func parseResponseInformation(_ info: WWNetworking.ResponseInformation, api: API, forType type: ResponseType, using encoding: String.Encoding) -> ResponseType {
+    func parseResponseInformation(_ info: WWNetworking.ResponseInformation, api: API, forType type: ResponseType, field: String, using encoding: String.Encoding) -> ResponseType {
         
         let data = info.data
         
         switch type {
-        case .string: return .string(combineResponseString(api: api, data: data, using: encoding))
+        case .string: return .string(combineResponseString(api: api, data: data, field: field, using: encoding))
         case .data(_): return .data(data)
         case .ndjson(_): return .ndjson(data?._ndjson(using: encoding))
         }
@@ -117,10 +151,12 @@ private extension WWSimpleOllamaAI {
 
     /// [結合回應字串](https://zh.pngtree.com/freebackground/ai-artificial-intelligent-blue_961916.html)
     /// - Parameters:
+    ///   - api: API
     ///   - data: Data?
+    ///   - field: 欄位名稱 (response / content)
     ///   - encoding: String.Encoding
     /// - Returns: String?
-    func combineResponseString(api: API, data: Data?, using encoding: String.Encoding = .utf8) -> String? {
+    func combineResponseString(api: API, data: Data?, field: String, using encoding: String.Encoding = .utf8) -> String? {
         
         guard let jsonArray = data?._ndjson(using: encoding) else { return nil }
         
@@ -132,7 +168,7 @@ private extension WWSimpleOllamaAI {
             jsonArray.forEach { json in
                 
                 guard let dict = json as? [String: Any],
-                      let response = dict["response"] as? String
+                      let response = dict[field] as? String
                 else {
                     return
                 }
@@ -146,7 +182,7 @@ private extension WWSimpleOllamaAI {
                 
                 guard let dict = json as? [String: Any],
                       let message = dict["message"] as? [String: Any],
-                      let content = message["content"] as? String
+                      let content = message[field] as? String
                 else {
                     return
                 }
