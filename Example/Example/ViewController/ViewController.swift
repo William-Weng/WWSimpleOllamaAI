@@ -30,8 +30,8 @@ final class ViewController: UIViewController {
         Task { await generate(prompt: "你好,請問今天天氣如何?") }
     }
     
-    @IBAction func chatDemo(_ sender: UIButton) {
-         Task { await chat(content: "您的模型是幾版的？") }
+    @IBAction func talkDemo(_ sender: UIButton) {
+         Task { await talk(content: "您的模型是幾版的？") }
     }
     
     @IBAction func generateLiveDemo(_ sender: UIButton) {
@@ -77,7 +77,7 @@ private extension ViewController {
         displayHUD()
         configure()
         
-        let result = await WWSimpleOllamaAI.shared.loadIntoMemory()
+        let result = await WWSimpleOllamaAI.shared.loadIntoMemory(api: .generate)
         
         switch result {
         case .failure(let error): displayText(error)
@@ -106,12 +106,11 @@ private extension ViewController {
     
     /// 聊天對談
     /// - Parameter content: 提問
-    func chat(content: String) async {
+    func talk(content: String) async {
         
         displayHUD()
         
-        let message: WWSimpleOllamaAI.MessageInformation = .init(roleType: .user, content: content)
-        let result = await WWSimpleOllamaAI.shared.chat(message: message)
+        let result = await WWSimpleOllamaAI.shared.talk(content: content)
         
         switch result {
         case .failure(let error): displayText(error)

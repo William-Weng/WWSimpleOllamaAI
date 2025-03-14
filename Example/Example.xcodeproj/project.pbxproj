@@ -18,11 +18,12 @@
 		8179B6582D828A2F00CA89DA /* Loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 8179B6572D828A2F00CA89DA /* Loading.gif */; };
 		8199D0E12D828DF2003B96B1 /* WWSimpleOllamaAI in Frameworks */ = {isa = PBXBuildFile; productRef = 8199D0E02D828DF2003B96B1 /* WWSimpleOllamaAI */; };
 		8199D0E82D82A85E003B96B1 /* WWSimpleOllamaAI in Frameworks */ = {isa = PBXBuildFile; productRef = 8199D0E72D82A85E003B96B1 /* WWSimpleOllamaAI */; };
+		81AAC18C2D8425510061DB97 /* WWHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 81AAC18B2D8425510061DB97 /* WWHUD */; };
+		81AAC18F2D84319B0061DB97 /* WWSimpleOllamaAI in Frameworks */ = {isa = PBXBuildFile; productRef = 81AAC18E2D84319B0061DB97 /* WWSimpleOllamaAI */; };
 		81B448C42D817F9700F9EFCF /* WWSimpleOllamaAI in Frameworks */ = {isa = PBXBuildFile; productRef = 81B448C32D817F9700F9EFCF /* WWSimpleOllamaAI */; };
 		81D0FA902D82D66F00918C55 /* WWSimpleOllamaAI in Frameworks */ = {isa = PBXBuildFile; productRef = 81D0FA8F2D82D66F00918C55 /* WWSimpleOllamaAI */; };
 		81D0FA962D82D67F00918C55 /* WWEventSource in Frameworks */ = {isa = PBXBuildFile; productRef = 81D0FA952D82D67F00918C55 /* WWEventSource */; };
-		81D0FA9C2D82E42000918C55 /* WWHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 81D0FA9B2D82E42000918C55 /* WWHUD */; };
-		81FA10512D83F8E800049E55 /* WWSimpleOllamaAI in Frameworks */ = {isa = PBXBuildFile; productRef = 81FA10502D83F8E800049E55 /* WWSimpleOllamaAI */; };
+		81FA10572D83FA6400049E55 /* WWSimpleOllamaAI in Frameworks */ = {isa = PBXBuildFile; productRef = 81FA10562D83FA6400049E55 /* WWSimpleOllamaAI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,13 +43,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81AAC18F2D84319B0061DB97 /* WWSimpleOllamaAI in Frameworks */,
 				8163708A2D83C0F600CA06B7 /* WWSimpleOllamaAI in Frameworks */,
-				81FA10512D83F8E800049E55 /* WWSimpleOllamaAI in Frameworks */,
+				81FA10572D83FA6400049E55 /* WWSimpleOllamaAI in Frameworks */,
 				81D0FA902D82D66F00918C55 /* WWSimpleOllamaAI in Frameworks */,
 				8199D0E82D82A85E003B96B1 /* WWSimpleOllamaAI in Frameworks */,
 				81D0FA962D82D67F00918C55 /* WWEventSource in Frameworks */,
-				81D0FA9C2D82E42000918C55 /* WWHUD in Frameworks */,
 				8199D0E12D828DF2003B96B1 /* WWSimpleOllamaAI in Frameworks */,
+				81AAC18C2D8425510061DB97 /* WWHUD in Frameworks */,
 				81B448C42D817F9700F9EFCF /* WWSimpleOllamaAI in Frameworks */,
 				81545BD12D817EA50036F40B /* WWSimpleOllamaAI in Frameworks */,
 			);
@@ -159,9 +161,10 @@
 				8199D0E72D82A85E003B96B1 /* WWSimpleOllamaAI */,
 				81D0FA8F2D82D66F00918C55 /* WWSimpleOllamaAI */,
 				81D0FA952D82D67F00918C55 /* WWEventSource */,
-				81D0FA9B2D82E42000918C55 /* WWHUD */,
 				816370892D83C0F600CA06B7 /* WWSimpleOllamaAI */,
-				81FA10502D83F8E800049E55 /* WWSimpleOllamaAI */,
+				81FA10562D83FA6400049E55 /* WWSimpleOllamaAI */,
+				81AAC18B2D8425510061DB97 /* WWHUD */,
+				81AAC18E2D84319B0061DB97 /* WWSimpleOllamaAI */,
 			);
 			productName = Example;
 			productReference = 817567F82CA2C2B400B24577 /* Example.app */;
@@ -193,8 +196,8 @@
 			mainGroup = 817567EF2CA2C2B400B24577;
 			packageReferences = (
 				81D0FA942D82D67F00918C55 /* XCRemoteSwiftPackageReference "WWEventSource" */,
-				81D0FA9A2D82E42000918C55 /* XCRemoteSwiftPackageReference "WWHUD" */,
-				81FA104F2D83F8E800049E55 /* XCRemoteSwiftPackageReference "WWSimpleOllamaAI" */,
+				81AAC18A2D8425510061DB97 /* XCRemoteSwiftPackageReference "WWHUD" */,
+				81AAC18D2D84319B0061DB97 /* XCRemoteSwiftPackageReference "WWSimpleOllamaAI" */,
 			);
 			productRefGroup = 817567F92CA2C2B400B24577 /* Products */;
 			projectDirPath = "";
@@ -461,15 +464,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		81D0FA942D82D67F00918C55 /* XCRemoteSwiftPackageReference "WWEventSource" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/William-Weng/WWEventSource";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
-			};
-		};
-		81D0FA9A2D82E42000918C55 /* XCRemoteSwiftPackageReference "WWHUD" */ = {
+		81AAC18A2D8425510061DB97 /* XCRemoteSwiftPackageReference "WWHUD" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/William-Weng/WWHUD";
 			requirement = {
@@ -477,12 +472,20 @@
 				minimumVersion = 1.3.1;
 			};
 		};
-		81FA104F2D83F8E800049E55 /* XCRemoteSwiftPackageReference "WWSimpleOllamaAI" */ = {
+		81AAC18D2D84319B0061DB97 /* XCRemoteSwiftPackageReference "WWSimpleOllamaAI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/William-Weng/WWSimpleOllamaAI";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.5.3;
+				minimumVersion = 0.6.0;
+			};
+		};
+		81D0FA942D82D67F00918C55 /* XCRemoteSwiftPackageReference "WWEventSource" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/William-Weng/WWEventSource";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -504,6 +507,16 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = WWSimpleOllamaAI;
 		};
+		81AAC18B2D8425510061DB97 /* WWHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81AAC18A2D8425510061DB97 /* XCRemoteSwiftPackageReference "WWHUD" */;
+			productName = WWHUD;
+		};
+		81AAC18E2D84319B0061DB97 /* WWSimpleOllamaAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81AAC18D2D84319B0061DB97 /* XCRemoteSwiftPackageReference "WWSimpleOllamaAI" */;
+			productName = WWSimpleOllamaAI;
+		};
 		81B448C32D817F9700F9EFCF /* WWSimpleOllamaAI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WWSimpleOllamaAI;
@@ -517,14 +530,8 @@
 			package = 81D0FA942D82D67F00918C55 /* XCRemoteSwiftPackageReference "WWEventSource" */;
 			productName = WWEventSource;
 		};
-		81D0FA9B2D82E42000918C55 /* WWHUD */ = {
+		81FA10562D83FA6400049E55 /* WWSimpleOllamaAI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 81D0FA9A2D82E42000918C55 /* XCRemoteSwiftPackageReference "WWHUD" */;
-			productName = WWHUD;
-		};
-		81FA10502D83F8E800049E55 /* WWSimpleOllamaAI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 81FA104F2D83F8E800049E55 /* XCRemoteSwiftPackageReference "WWSimpleOllamaAI" */;
 			productName = WWSimpleOllamaAI;
 		};
 /* End XCSwiftPackageProductDependency section */

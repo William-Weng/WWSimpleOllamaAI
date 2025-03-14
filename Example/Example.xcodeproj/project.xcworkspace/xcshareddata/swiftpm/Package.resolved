@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/William-Weng/WWNetworking.git",
       "state" : {
-        "revision" : "df5c6fbb54c661e4669b624c5fd10f727a91302f",
-        "version" : "1.7.3"
+        "revision" : "836a851aa96dad9d31ad2db701758c8f568d965f",
+        "version" : "1.7.4"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/William-Weng/WWSimpleOllamaAI",
       "state" : {
-        "revision" : "fd2e20a8604d8d4f9bd9ff0b3e38f3260f93fdd4",
-        "version" : "0.5.2"
+        "revision" : "f5c094d357ed76ded67f0d43aaace819caaa69ad",
+        "version" : "0.6.0"
       }
     }
   ],

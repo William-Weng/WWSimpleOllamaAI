@@ -72,17 +72,29 @@ public extension WWSimpleOllamaAI {
         }
     }
     
-    /// 要求AI要求的選項敘述
+    /// 要求AI的選項敘述
     enum ResponseOptions {
         
-        case string(_ string: String)
         case json(_ json: String)
         
         /// 數值
         /// - Returns: String
         func value() -> String {
             switch self {
-            case .string(let string): return "\"\(string)\""
+            case .json(let json): return json
+            }
+        }
+    }
+    
+    /// 要求AI的函式功能
+    enum ResponseTools {
+        
+        case json(_ json: String)
+        
+        /// 數值
+        /// - Returns: String
+        func value() -> String {
+            switch self {
             case .json(let json): return json
             }
         }

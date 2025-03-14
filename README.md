@@ -11,16 +11,18 @@
 ### [Installation with Swift Package Manager](https://medium.com/彼得潘的-swift-ios-app-開發問題解答集/使用-spm-安裝第三方套件-xcode-11-新功能-2c4ffcf85b4b)
 ```
 dependencies: [
-    .package(url: "https://github.com/William-Weng/WWSimpleOllamaAI.git", .upToNextMajor(from: "0.5.3"))
+    .package(url: "https://github.com/William-Weng/WWSimpleOllamaAI.git", .upToNextMajor(from: "0.6.1"))
 ]
 ```
 
 ## [Function - 可用函式](https://william-weng.github.io/2025/01/docker容器大家一起來當鯨魚搬運工吧/)
 |函式|功能|
 |-|-|
-|loadIntoMemory(_:type:using:)|載入模型到記憶體的設定 - 開 / 關|
-|generate(prompt:type:format:images:options:useStream:using:)|一次性回應 - 每次請求都是獨立的|
-|chat(message:type:useStream:using:)|對話模式 - 會記住之前的對話內容|
+|configure(baseURL:model:jpegCompressionQuality:)|相關參數設定|
+|loadIntoMemory(api:isLoad:type:using:)|載入模型到記憶體的設定 - 開 / 關|
+|generate(prompt:type:timeout:format:options:images:useStream:using:)|一次性回應 - 每次請求都是獨立的|
+|talk(content:type:timeout:format:useStream:options:images:tools:using:)|說話模式 - 會記住之前的對話內容|
+|chat(messages:type:format:timeout:useStream:options:images:tools:using:)|對話模式 - 會記住之前的對話內容|
 
 ## [Example](https://ezgif.com/video-to-webp)
 ```swift
@@ -100,7 +102,7 @@ private extension ViewController {
         displayHUD()
         configure()
         
-        let result = await WWSimpleOllamaAI.shared.loadIntoMemory()
+        let result = await WWSimpleOllamaAI.shared.loadIntoMemory(api: .generate)
         
         switch result {
         case .failure(let error): displayText(error)
